@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 
 class NewsRepository @Inject constructor(private val newsService: NewsService){
-    suspend fun getNews(units:String) : Flow<Result<NewsResponse>> =
+    suspend fun getNews() : Flow<Result<NewsResponse>> =
         newsService.fetchNews().map {
             if(it.isSuccess)
                 Result.success(it.getOrNull()!!)
