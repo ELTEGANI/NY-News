@@ -8,12 +8,14 @@ import javax.inject.Inject
 
 
 class NewsRepository @Inject constructor(private val newsService: NewsService){
-    suspend fun getNews() : Flow<Result<NewsResponse>> =
+    suspend fun getNews() : Flow<Result<NewsResponse?>> =
         newsService.fetchNews().map {
-            if(it.isSuccess)
-                Result.success(it.getOrNull()!!)
+            (if(it.isSuccess)
+                Result.success(it.getOrNull())
             else
-                Result.failure(it.exceptionOrNull()!!)
+                it.exceptionOrNull()?.let {
+                        it1 -> Result.failure(it1)
+                }) as Result<NewsResponse?>
         }
 
 }
