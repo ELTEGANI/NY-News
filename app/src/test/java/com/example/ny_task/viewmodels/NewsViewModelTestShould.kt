@@ -45,7 +45,7 @@ class NewsViewModelTestShould: BaseUnitTes(){
     }
 
     @Test
-    fun emitsCurrentWeatherFromRepository() = runBlockingTest{
+    fun emitsNewsFromRepository() = runBlockingTest{
         val viewModel = mockSuccessfulCase()
         assertEquals(expected,viewModel.newsList.getValueForTest())
     }
@@ -62,7 +62,7 @@ class NewsViewModelTestShould: BaseUnitTes(){
     }
 
     @Test
-    fun closeLoaderAfterCurrentWeatherLoad() = runBlockingTest{
+    fun closeLoaderAfterNewsLoad() = runBlockingTest{
         val viewModel = mockErrorCase()
         viewModel.loader.captureValues{
             viewModel.newsList.getValueForTest()

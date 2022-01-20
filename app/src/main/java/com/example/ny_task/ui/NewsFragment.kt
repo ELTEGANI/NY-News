@@ -2,6 +2,8 @@ package com.example.ny_task.ui
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -28,18 +30,24 @@ class NewsFragment : Fragment() {
         newsFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.news_fragment,container,false)
         newsFragmentBinding.lifecycleOwner = this
 
+        (activity as AppCompatActivity).setSupportActionBar(newsFragmentBinding.toolbar)
+        (activity as AppCompatActivity).supportActionBar?.setDisplayShowTitleEnabled(false)
         setHasOptionsMenu(true)
 
-
         observeItems(setUpAdapter())
+        loading()
+        setUpNavigation()
+
+        return newsFragmentBinding.root
+    }
+
+    private fun loading() {
         newsViewModel.loader.observe(this as LifecycleOwner) { Loader ->
-            when(Loader){
-                true-> newsFragmentBinding.progressBar.visibility = View.VISIBLE
-                else-> newsFragmentBinding.progressBar.visibility = View.GONE
+            when (Loader) {
+                true -> newsFragmentBinding.progressBar.visibility = View.VISIBLE
+                else -> newsFragmentBinding.progressBar.visibility = View.GONE
             }
         }
-        setUpNavigation()
-        return newsFragmentBinding.root
     }
 
     private fun setUpAdapter(): NewsAdapter {
@@ -53,8 +61,10 @@ class NewsFragment : Fragment() {
     @InternalCoroutinesApi
     private fun observeItems(newsAdapter: NewsAdapter) {
         newsViewModel.newsList.observe(viewLifecycleOwner,{response->
-                response.let {
-                    newsAdapter.submitList(it?.getOrNull()?.results)
+                if(response.getOrNull()?.results != null){
+                    newsAdapter.submitList(response.getOrNull()?.results)
+                }else{
+                    Toast.makeText(requireContext(), response.exceptionOrNull()?.message, Toast.LENGTH_SHORT).show()
                 }
         })
     }
@@ -70,15 +80,17 @@ class NewsFragment : Fragment() {
         })
     }
 
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+    override fun onOptionsItemSelected(item: MenuItem) =
         when (item.itemId) {
-
+            R.id.search_application -> {
+                true
+            }
+            else -> false
         }
-        return true
-    }
 
 }
