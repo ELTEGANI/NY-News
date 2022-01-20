@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+import com.example.ny_task.models.Result as NewsResult
 
 @InternalCoroutinesApi
 @HiltViewModel
@@ -17,6 +17,10 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
 
     val loader = MutableLiveData<Boolean>()
     val newsList: MutableLiveData<Result<NewsResponse?>> = MutableLiveData()
+
+    private val _navigateToSelectedNews = MutableLiveData<NewsResult?>()
+    val navigateToSelectedNews: MutableLiveData<NewsResult?>
+        get() = _navigateToSelectedNews
 
     init {
         getNewsFromApi()
@@ -36,5 +40,13 @@ class NewsViewModel @Inject constructor(private val newsRepository: NewsReposito
         }
     }
 
+
+    fun displayNewsDetails(result:NewsResult) {
+        _navigateToSelectedNews.value = result
+    }
+
+    fun displayNewsDetailsComplete() {
+        _navigateToSelectedNews.value = null
+    }
 
 }

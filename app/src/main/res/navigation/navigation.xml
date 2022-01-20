@@ -9,5 +9,20 @@
         android:id="@+id/newsFragment"
         android:name="com.example.ny_task.ui.NewsFragment"
         android:label="news_fragment"
-        tools:layout="@layout/news_fragment" />
+        tools:layout="@layout/news_fragment" >
+        <action
+            android:id="@+id/action_newsFragment_to_newsDetailsFragment"
+            app:destination="@id/newsDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsDetailsFragment"
+        android:name="com.example.ny_task.ui.NewsDetailsFragment"
+        android:label="news_details_fragment"
+        tools:layout="@layout/news_details_fragment" >
+
+
+        <argument
+            android:name="selectedNews"
+            app:argType="com.example.ny_task.models.Result" />
+    </fragment>
 </navigation>
