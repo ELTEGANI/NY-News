@@ -8,9 +8,9 @@
             name="news"
             type="com.example.ny_task.models.Result" />
 
-<!--        <variable-->
-<!--            name="clickListener"-->
-<!--            type="com.example.harajtask.utils.OnClickListener" />-->
+        <variable
+            name="clickListener"
+            type="com.example.ny_task.adapter.OnClickListener" />
 
     </data>
 
@@ -26,6 +26,7 @@
             android:clickable="true"
             android:elevation="1dp"
             android:focusable="true"
+            android:onClick="@{() -> clickListener.onClick(news)}"
             app:cardBackgroundColor="@color/white"
             app:cardPreventCornerOverlap="false"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -3,15 +3,14 @@ package com.example.ny_task.ui
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.fragment.findNavController
 import com.example.ny_task.R
 import com.example.ny_task.adapter.NewsAdapter
+import com.example.ny_task.adapter.OnClickListener
 import com.example.ny_task.databinding.NewsFragmentBinding
-import com.example.ny_task.models.NewsResponse
 import com.example.ny_task.viewmodels.NewsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -39,10 +38,14 @@ class NewsFragment : Fragment() {
                 else-> newsFragmentBinding.progressBar.visibility = View.GONE
             }
         }
+        setUpNavigation()
         return newsFragmentBinding.root
     }
+
     private fun setUpAdapter(): NewsAdapter {
-        val newsAdapter = NewsAdapter()
+        val newsAdapter = NewsAdapter(OnClickListener {
+            newsViewModel.displayNewsDetails(it)
+        })
         newsFragmentBinding.newsRecyclerView.adapter = newsAdapter
         return newsAdapter
     }
@@ -56,6 +59,16 @@ class NewsFragment : Fragment() {
         })
     }
 
+    private fun setUpNavigation() {
+        newsViewModel.navigateToSelectedNews.observe(viewLifecycleOwner, {
+            if (null != it) {
+                this.findNavController().navigate(
+                    NewsFragmentDirections.actionNewsFragmentToNewsDetailsFragment(it)
+                )
+                newsViewModel.displayNewsDetailsComplete()
+            }
+        })
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main, menu)

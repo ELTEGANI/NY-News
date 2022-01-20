@@ -10,7 +10,7 @@ import com.example.ny_task.models.NewsResponse
 import com.example.ny_task.models.Result
 
 
-class NewsAdapter:  ListAdapter<Result, NewsAdapter.ViewHolder>(
+class NewsAdapter(private val onClickListener: OnClickListener):  ListAdapter<Result, NewsAdapter.ViewHolder>(
     NewsDiffCallback()
 ){
     override fun onCreateViewHolder(parent: ViewGroup, viewType:Int): ViewHolder {
@@ -19,21 +19,20 @@ class NewsAdapter:  ListAdapter<Result, NewsAdapter.ViewHolder>(
 
 
     override fun onBindViewHolder(holder: ViewHolder, position:Int){
-        holder.bind(getItem(position))
+        holder.bind(getItem(position),onClickListener)
     }
-
-
 
 
     class ViewHolder private constructor(private var newsItemListBinding: NewsItemListBinding):
         RecyclerView.ViewHolder(newsItemListBinding.root) {
         fun bind(
-            result: Result
+            result: Result,
+            onClickListener: OnClickListener
         ) {
             newsItemListBinding.news = result
+            newsItemListBinding.clickListener = onClickListener
             newsItemListBinding.executePendingBindings()
         }
-
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
@@ -56,7 +55,7 @@ class NewsDiffCallback: DiffUtil.ItemCallback<Result>(){
     }
 }
 
-//
-//class OnClickListener(val onClickListener:(itemsProperties: ItemsProperties)->Unit){
-//    fun onClick(itemsProperties: ItemsProperties) = onClickListener(itemsProperties)
-//}
+
+class OnClickListener(val onClickListener:(result:Result)->Unit){
+    fun onClick(result:Result) = onClickListener(result)
+}
