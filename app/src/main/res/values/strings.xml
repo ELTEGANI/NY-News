@@ -4,4 +4,6 @@
     <string name="serach">serach</string>
     <string name="ny_times_most_popular">NY Times Most Popular</string>
     <string name="news_details">News Details</string>
+    <string name="search">Search</string>
+    <string name="setting">setting</string>
 </resources>
