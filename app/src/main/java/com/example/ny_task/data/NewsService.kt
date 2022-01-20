@@ -1,6 +1,5 @@
 package com.example.ny_task.data
 
-import android.util.Log
 import com.example.ny_task.data.remote.NewsApi
 import com.example.ny_task.models.NewsResponse
 import kotlinx.coroutines.flow.Flow
