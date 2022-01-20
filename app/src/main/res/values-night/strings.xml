@@ -3,4 +3,5 @@
     <string name="calendar_imageview">calendar_imageView</string>
     <string name="serach">serach</string>
     <string name="ny_times_most_popular">NY Times Most Popular</string>
+    <string name="news_details">News Details</string>
 </resources>

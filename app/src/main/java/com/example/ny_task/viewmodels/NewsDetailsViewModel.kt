@@ -1,4 +1,4 @@
-package com.example.ny_task.ui
+package com.example.ny_task.viewmodels
 
 import androidx.lifecycle.ViewModel
 
